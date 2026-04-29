@@ -35,6 +35,7 @@ class PipelineState(TypedDict):
     researched_events: list
     student_matches: list
     pdf_paths: list
+    run_dir: str
     error: str
 
 
@@ -88,9 +89,12 @@ def generate_pdfs(state: PipelineState) -> PipelineState:
     if state.get("error"):
         return state
     print("\n[5/5] Generating PDF emails...")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = OUTPUT_DIR / f"run_{timestamp}"
+    run_dir.mkdir(parents=True, exist_ok=True)
     newsletter_date = state["parsed_email"].get("date", "")
-    paths = generate_all_pdfs(state["student_matches"], newsletter_date, OUTPUT_DIR)
-    return {**state, "pdf_paths": [str(p) for p in paths]}
+    paths = generate_all_pdfs(state["student_matches"], newsletter_date, run_dir)
+    return {**state, "pdf_paths": [str(p) for p in paths], "run_dir": str(run_dir)}
 
 
 # ── Node 6 ────────────────────────────────────────────────────────────────────
@@ -99,9 +103,18 @@ def save_summary(state: PipelineState) -> PipelineState:
         print(f"\nPipeline error: {state['error']}")
         return state
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = Path(state["run_dir"])
+
+    # Save full pipeline state for later preview/reuse
+    state_data = {
+        "parsed_email": state["parsed_email"],
+        "researched_events": state["researched_events"],
+        "student_matches": state["student_matches"],
+    }
+    (run_dir / "state.json").write_text(json.dumps(state_data, indent=2))
+
     summary = {
-        "run_at": timestamp,
+        "run_at": run_dir.name,
         "newsletter_subject": state["parsed_email"].get("subject", ""),
         "newsletter_date": state["parsed_email"].get("date", ""),
         "events_researched": len(state["researched_events"]),
@@ -112,7 +125,7 @@ def save_summary(state: PipelineState) -> PipelineState:
             for m in state["student_matches"]
         },
     }
-    summary_path = OUTPUT_DIR / f"summary_{timestamp}.json"
+    summary_path = run_dir / "summary.json"
     summary_path.write_text(json.dumps(summary, indent=2))
 
     print(f"\n{'='*60}")
@@ -121,7 +134,7 @@ def save_summary(state: PipelineState) -> PipelineState:
     print(f"  Events     : {summary['events_researched']} researched")
     print(f"  Students   : {summary['students_processed']} processed")
     print(f"  PDFs       : {len(summary['pdfs_generated'])} generated")
-    print(f"  Summary    : {summary_path}")
+    print(f"  Run dir    : {run_dir}")
     print(f"{'='*60}\n")
 
     return state
@@ -156,6 +169,7 @@ def run():
         "researched_events": [],
         "student_matches": [],
         "pdf_paths": [],
+        "run_dir": "",
         "error": "",
     }
     return pipeline.invoke(initial)
