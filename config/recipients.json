@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Recipient One",
+    "email": "recipient1@example.com",
+    "child_name": "Student One",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Two",
+    "email": "recipient2@example.com",
+    "child_name": "Student Two",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Three",
+    "email": "recipient3@example.com",
+    "child_name": "Student Three",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Four",
+    "email": "recipient4@example.com",
+    "child_name": "Student Four",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Five",
+    "email": "recipient5@example.com",
+    "child_name": "Student Five",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Six",
+    "email": "recipient6@example.com",
+    "child_name": "Student Six",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Seven",
+    "email": "recipient7@example.com",
+    "child_name": "Student Seven",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Eight",
+    "email": "recipient8@example.com",
+    "child_name": "Student Eight",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Nine",
+    "email": "recipient9@example.com",
+    "child_name": "Student Nine",
+    "grade": "11",
+    "characteristics": "TBD"
+  },
+  {
+    "name": "Recipient Ten",
+    "email": "recipient10@example.com",
+    "child_name": "Student Ten",
+    "grade": "11",
+    "characteristics": "TBD"
+  }
+]
